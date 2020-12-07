@@ -25,6 +25,8 @@
 \usepackage{bussproofs}
 \usepackage{proof}
 
+\newcommand{\cplanar}{\mathcal{C}_{\operatorname{Planar}}}
+
 \title[Graph minors]{Graph minors\\Robertson and Seymour's theorem in parameterized complexity}
 
 \author{Narek Bojikian} % Your name
@@ -103,13 +105,13 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	\end{itemize}
 \end{frame}
 \begin{frame} \frametitle{Robertson and Seymour's Theorem}
-	\begin{block}{Robertson and Seymour's Theorem [1]}
+	\begin{block}{Theorem 1. Robertson and Seymour's Theorem [1]}
 		The class of all graphs is well-quasi-ordered by the minor relation. That is in any
 		infinite family of graphs, there are two graphs such that one is a minor of the
 		other.
 	\end{block}
 	\uncover<2->{
-	\begin{block} {Corollary} 
+	\begin{block} {Corollary 2.}
 		For every minor-closed graph class $\mathcal{C}$, there exists a finite set
 		$\operatorname{Forb}(\mathcal{C})$ of graphs with the following property: for every
 		graph $G$, graph $G$ belongs to $\mathcal{C}$ if and only if ther edoes not exist a
@@ -118,6 +120,68 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	\uncover<3->{
 		\textbf{Proof sketch.}
 	}
+
+\uncover<4->{
+	\textbf{-Examples:}
+	\begin{itemize}[<+->]
+		\item The set of minimal forbidden minors of planar graphs are $K_5$ and $K_{3,3}$.
+		\uncover<5->{
+	\item The only minimal forbidden minor of Forests is $C_3$.}
+\end{itemize}}
 	
+\end{frame}
+\begin{frame} \frametitle{Meta algorithm Zugehoerigkeitsproblem? [todo]}
+	\begin{block}{Theorem 3. [Robertson and Seymour, 2][todo]}
+			There exists a computable functoin $f$ and an algorithm that, for given
+			graphs $H$ and $G$, checks in time $f(H)|V(G)|^3$ whether $H \leq_m G$.
+	\end{block}
+	\begin{itemize}[<+->]
+		\item []
+		\item Theorem 3 yields an algorithm, that given a graph $G$ decides in polynomial
+			time whether $G$ is planar or not.
+		\item Let $\cplanar$ be the class of all planar graphs.
+		\item Since $\operatorname{Forb}(\cplanar) = \{K_5, K_{3,3}\}$, it suffices to run
+			the previous algorithm on 
+		\item Using Corollary 2, we can define a similar algorithm for any minor-closed
+			class of graphs.
+		\item This yields an algorithm, that decides in polynomial time whether a given
+			graph admits a vertex cover of size at most $k$ for a constant value of
+			$k$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Minor-monotonousity and nonuniformly FPT}
+	\begin{itemize}[<+->]
+		\item We call a parameter $\rho$ minor-monotone,\\
+			\hspace{1cm}if $\rho(H)\leq \rho(G)$ for all $H \leq_m G$.
+		\item Vertex cover number, ..[todo] are minor-monotone.%Examples
+		\item Given a parameter $\rho$ and a constant $k$,\\
+		\hspace{1cm}let $\mathcal{C}_{\rho, k} := \{G \colon \rho{G} \leq k\}$.
+		\item If $\rho$ is minor-monotone, then $C_{\rho, k}$ is minor-closed.
+		\item $\implies$ Decide in $O(f(k) n^3)$ whether a graph belongs to $C_{\rho, k}$.
+		\item Not quite fixed-parameter tractable.
+	\end{itemize}
+\end{frame}
+\begin{frame} \frametitle{Minor-monotonousity and nonuniformly FPT}
+	\begin{itemize}[<+->]
+		\item A problem $\mathcal{Q}$ is \textbf{nonuniformly} FPT,\\
+			\hspace{1cm}if there exist
+			\begin{itemize}
+				\item a computable function $f:\mathbb{N}\rightarrow\mathbb{N}$,
+				\item and collection of algorithms $(\mathcal{A}_k)_{k \in
+					\mathbb{N}}$,
+			\end{itemize}
+		\item[] such that for every $k \in \mathbb{N}$ and every input $x$, 
+		\begin{itemize}[<+->]
+			\item the algorithm $\mathcal{A}_k$ accepts $x$ if and only if $(x,
+				k)$ is a yes-instance of $\mathcal{Q}$,
+			\item and $\mathcal{A}_k$ runs in time $f(k)|x|^{\alpha}$.
+		\end{itemize}
+	\item For a minor-monotone parameter $\rho$,\\
+		\hspace{1cm}finding $\rho(G)$ of a given graph $G$ is nonuniformly FPT.
+	\end{itemize}
+	
+\end{frame}
+\begin{frame}\frametitle{Vertex-deletion distance}
 \end{frame}
 \end{document} 
