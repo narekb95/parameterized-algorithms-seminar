@@ -1,0 +1,78 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[t,usenames,dvipsnames]{beamer}
+\mode<presentation> {
+\usetheme{Boadilla}
+\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{cancel}
+\usepackage{bussproofs}
+\usepackage{proof}
+
+\title[Graph minors]{Graph minors\\Robertson and Seymour's theorem in parameterized complexity}
+
+\author{Narek Bojikian} % Your name
+\institute[hu-berlin] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+Humboldt University of Berlin\\ % Your institution for the title page
+\medskip
+\textit{bojikian@informatik.hu-berlin.de} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+\begin{frame} \frametitle{Graph minors}
+	\begin{minipage}[t]{.59\linewidth}
+	\begin{itemize}[<+->]
+		\item Given graph $G$.
+		\item $H$ is a minor of $G$,
+			\begin{itemize}
+				\item if $H$ results from $G$ by\\
+					edge deletions and \textbf{contractions}.
+			\end{itemize}
+	\end{itemize}
+	\end{minipage}
+	\begin{minipage}[t]{.39\linewidth}
+			\uncover<4->{Edge-contractions\\}%
+			\only<4>{\includegraphics[width=0.9\linewidth]{contraction-0.eps}}%
+			\only<5->{\includegraphics[width=0.9\linewidth]{contraction.eps}}%
+	\end{minipage}
+	\begin{itemize}[<+->]
+		\item []
+		\item []
+		\item A graph $H$ is a minor of $G$ iff there exists\\
+			branch-set $V_h$ f.a. $h \in V(h)$ s.t.
+			\begin{itemize}
+				\item $G[V_h]$ is connected.
+				\item for $g \neq h$ it holds $V_g \cap V_h = \emptyset$.
+				\item for $\{g,h\} \in E(H)$, there exist $u_g \in V_g, u_h
+					\in V_h$,\\
+					s.t. $\{u_g, u_h\} \in E(G)$.
+			\end{itemize}
+		\item Are both definitions equivalent?
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	
+\end{frame}
+\end{document} 
