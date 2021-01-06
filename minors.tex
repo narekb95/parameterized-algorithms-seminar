@@ -130,7 +130,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 \end{itemize}}
 	
 \end{frame}
-\begin{frame} \frametitle{Meta algorithm Zugehoerigkeitsproblem? [todo]}
+\begin{frame} \frametitle{Planarity test - a meta algorithm}
 	\begin{block}{Theorem 3. [Robertson and Seymour, 2][todo]}
 			There exists a computable functoin $f$ and an algorithm that, for given
 			graphs $H$ and $G$, checks in time $f(H)|V(G)|^3$ whether $H \leq_m G$.
@@ -140,8 +140,8 @@ Humboldt University of Berlin\\ % Your institution for the title page
 		\item Theorem 3 yields an algorithm, that given a graph $G$ decides in polynomial
 			time whether $G$ is planar or not.
 		\item Let $\cplanar$ be the class of all planar graphs.
-		\item Since $\operatorname{Forb}(\cplanar) = \{K_5, K_{3,3}\}$, it suffices to run
-			the previous algorithm on 
+		\item Since $\operatorname{Forb}(\cplanar) = \{K_5, K_{3,3}\}$, it suffices to test
+			the input graphs against these two minors.
 		\item Using Corollary 2, we can define a similar algorithm for any minor-closed
 			class of graphs.
 		\item This yields an algorithm, that decides in polynomial time whether a given
@@ -183,5 +183,35 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	
 \end{frame}
 \begin{frame}\frametitle{Vertex-deletion distance}
+	\begin{itemize}[<+->]
+		\item The class of independent sets $\mathcal{I}$ is minor closed.
+		\item Given a graph $G$. The vertex cover number of $G$
+		\item[] \hspace{1cm} is the number of vertex-deletions to independent sets.
+		\item Vertex cover number is vertex-deletion distance to independent sets.
+		\item $G$ has vertex-deletion distance $k$ from $\mathcal{S}$,
+		\item[] \hspace{1cm} if there is $S \in V, |S| \leq k$ s.t. $G \setminus S \in
+			\mathcal{S}$.
+		\item $\mathcal{G} + k v$ graphs with vertex-deletions distance $k$ to
+			$\mathcal{G}$.
+		\item $\mathcal{I} + k v$ is class of graphs with vertex-cover number $k$.
+	\end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Vertex-deletion distance}
+	\begin{itemize}[<+->]
+		\item Vertex cover number $k$ is also minor closed.
+		\item More generally:
+		\item[] The class of graphs with vertex-deletion distance $k$\\
+			to a minor-closed class of graphs is minor closed. (why?)
+		\item Vertex-deletion distance to a minor-closed class is minor-monotone.
+
+		\item $\mathcal{G}$ Vertex-deletion Problem:
+			\begin{itemize}
+				\item Given $G$ and $k$.
+				\item Does $G$ have vertex-deletion distance $k$ from $\mathcal{G}$?
+			\end{itemize}
+		\item For each minor-closed class $\mathcal{G}$, 
+		\item[] \hspace{1cm} $\mathcal{G}$ vertex-deletion problem is nonuniformly FPT.
+		\item Example: Feedback-vertex number is vertex-deletion distance to forests.
+	\end{itemize}
 \end{frame}
 \end{document} 
