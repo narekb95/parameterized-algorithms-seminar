@@ -50,7 +50,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 		\item $H$ is a minor of $G$,
 			\begin{itemize}
 				\item[] if $H$ results from $G$ by\\
-					edge deletions and \textbf{contractions}.
+					vertex/edge deletions and \textbf{contractions}.
 			\end{itemize}
 	\end{itemize}
 	\end{minipage}
@@ -105,7 +105,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	\end{itemize}
 \end{frame}
 \begin{frame} \frametitle{Robertson and Seymour's Theorem}
-	\begin{block}{Theorem 1. Robertson and Seymour's Theorem [1]}
+	\begin{block}{Theorem 1. Robertson and Seymour's Theorem}
 		The class of all graphs is well-quasi-ordered by the minor relation. That is in any
 		infinite family of graphs, there are two graphs such that one is a minor of the
 		other.
@@ -114,8 +114,9 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	\begin{block} {Corollary 2.}
 		For every minor-closed graph class $\mathcal{C}$, there exists a finite set
 		$\operatorname{Forb}(\mathcal{C})$ of graphs with the following property: for every
-		graph $G$, graph $G$ belongs to $\mathcal{C}$ if and only if ther edoes not exist a
-		minor of $G$ that is isomorph to a member of $\operatorname{Forb}(\mathcal{C})$.
+		graph $G$, the graph $G$ belongs to $\mathcal{C}$ if and only if there does not
+		exist a minor of $G$ that is isomorphic to a member of
+		$\operatorname{Forb}(\mathcal{C})$.
 	\end{block}}
 	\uncover<3->{
 		\textbf{Proof sketch.}
@@ -131,7 +132,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	
 \end{frame}
 \begin{frame} \frametitle{Planarity test - a meta algorithm}
-	\begin{block}{Theorem 3. [Robertson and Seymour, 2][todo]}
+	\begin{block}{Theorem 3. Robertson and Seymour}
 			There exists a computable functoin $f$ and an algorithm that, for given
 			graphs $H$ and $G$, checks in time $f(H)|V(G)|^3$ whether $H \leq_m G$.
 	\end{block}
@@ -154,11 +155,12 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	\begin{itemize}[<+->]
 		\item We call a parameter $\rho$ minor-monotone,\\
 			\hspace{1cm}if $\rho(H)\leq \rho(G)$ for all $H \leq_m G$.
-		\item Vertex cover number, ..[todo] are minor-monotone.%Examples
+		\item Vertex cover number is minor monotne. (why?)
+		\item Longest path and feedback vertex number are also minor-monotone.
 		\item Given a parameter $\rho$ and a constant $k$,\\
-		\hspace{1cm}let $\mathcal{C}_{\rho, k} := \{G \colon \rho{G} \leq k\}$.
+		\hspace{1cm}let $\mathcal{C}_{\rho, k} := \{G \colon \rho(G) \leq k\}$.
 		\item If $\rho$ is minor-monotone, then $C_{\rho, k}$ is minor-closed.
-		\item $\implies$ Decide in $O(f(k) n^3)$ whether a graph belongs to $C_{\rho, k}$.
+		\item[] $\implies$ Decide in $O(f(k) n^3)$ whether a graph belongs to $C_{\rho, k}$.
 		\item Not quite fixed-parameter tractable.
 	\end{itemize}
 \end{frame}
@@ -198,7 +200,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 \end{frame}
 \begin{frame}\frametitle{Vertex-deletion distance}
 	\begin{itemize}[<+->]
-		\item Vertex cover number $k$ is also minor closed.
+		\item Vertex cover number $k$ is minor closed.
 		\item More generally:
 		\item[] The class of graphs with vertex-deletion distance $k$\\
 			to a minor-closed class of graphs is minor closed. (why?)
