@@ -43,34 +43,53 @@
 
 \section{Introduction}
 \subsection{History}
-Graph minor theorem was found by Robertson and Seymour in a series of 20 papers to prove the
-infamous conjecture of Wagner \cite{} [todo]. Since then this theorem has been crucial in
+Graph minor theorem was found by Robertson and Seymour in a series of 20 papers, resulting in a
+proof of the well-known conjecture of Wagner. Since then this theorem has been crucial in
 combinatorics, geometry and graph theory. It has seen applications in different areas of theoretical
 computer science. In this report we show applications of this theorem to parameterized complexity
-reintroducing the notion of nonuniformly fixed-parameter tractabiliy.
+reintroducing the notion of nonuniformly fixed-parameter tractability.
 
-The theorem in short shows that any infinited set of undirected graphs contain two graphs such that
+The theorem in short shows that any infinite set of undirected graphs contain two graphs such that
 one of them is isomorphic to a minor of the other. This implies that graph properties that are
 preserved by taking minors can be described by a finite set of (minimal) forbidden minors. However,
 the proof of the theorem is non-constructive and does not deliver a way to find such a list. Such
-lists are only known for a few minor-closed classes of graphs such as planar grpahs Kuratowski's
-Theorem and outer-planar graphs. For some graph-classes such lists are only partially known and can
-be arbitrary large for example, Toroidal graphs (graphs that can be embedded on a torus) have at
-least 250,815 known forbidden minors. On the other hand, Robertson and Seymour provide an algorithm,
-that given two graphs $G$ and $H$ finds in polynomial time in $G$ and some function in $H$ whether
-$H$ is a minor of $G$. Given the complete list of forbidden minors of some class $\mathcal{C}$,
-this results yield a polynomial time algorithm to test whether a given graph belong to this class or
-not. However, although Robertson and Seymour's theorem prove the existence of such an algorithm, it
-is not clear how to derive the algorithm it self, sense there is no clear way to find the list of
-forbidden minors of a given graph.
+lists are only known for a few minor-closed classes of graphs such as planar graphs (Kuratowski's
+Theorem) outer-planar graphs and forests. For some graph-classes such lists are only partially known
+and can be arbitrary large for example, Toroidal graphs (graphs that can be embedded on a torus)
+have at least 250,815 known forbidden minors. On the other hand, Robertson and Seymour provide an
+algorithm, that given two graphs $G$ and $H$ finds in polynomial time in $G$ and some function in
+$H$ whether $H$ is a minor of $G$. Given the complete list of forbidden minors of some class
+$\mathcal{C}$, this results yield a polynomial time algorithm to test whether a given graph belong
+to this class or not. However, although Robertson and Seymour's theorem prove the existence of such
+an algorithm, it is not clear how to derive the algorithm it self, sense there is no clear way to
+find the list of forbidden minors of a given graph.
 
-[todo] parameterized complexity
-
-In the rest of this report we give formal definitions of all the mentioned terms and provide formal
-statements for the results of Robertson and Seymour. We follow that by their application to
-parameterized complexity and two examples from the exercises of the book mentioned above.
+One application of graph minor theorem, that we will focus on in this report, is in the field of
+parameterized complexity. As discussed above, some properties of graphs stay preserved in all minors
+of a graph. We have seen that polynomial time algorithms for testing such properties exist. Under
+these properties we consider some graph parameters that have their values preserved in all minors
+of a given graph. It is not hard to show that a polynomial time algorithm exists, that given a graph
+$G$ and an integer value $k$, it tests whether the value of such a parameter in $G$ is at most $k$.
+However, since the list of forbidden minors must be hard-coded into the algorithm and we do not know
+whether an algorithm exists that generate such a list for each value of the parameter, deciding
+whether $G$ has the parameter value $k$ is not quite fixed-parameter tractable. Still, knowing that
+such an algorithm exists is a strong notion that a given problem might be fixed-parameter tractable.
+We call problems that admit such algorithms nonuniformly fixed-parameter tractable. As we shall see
+later in this report, a family of parameters, given by the number of vertex-deletions needed for a
+graph to admit a certain minor-closed property belong all to this class.  Since no known
+nonuniformly fixed-parameter tractable problem is W[1]-hard, scientists conjecture that FPT is equal
+to nonuniformly FPT.
 
 \subsection{Preliminaries}
+
+\section{Formal results and theories}
+\subsection{Graph minors and Robertson and Seymour's theorem}
+\subsection{Non-uniformly fixed parameter tractability}
+\subsection{Vertex deletion distance}
+
+\section{Problems from the book}
+Note that we gave a proof sketch of .. in the proof of ..
+
 \bibliographystyle{plain}
 \bibliography{ref.bib}
 \end{document}
