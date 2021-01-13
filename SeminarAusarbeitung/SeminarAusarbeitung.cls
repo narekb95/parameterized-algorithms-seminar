@@ -79,6 +79,24 @@
   \end{center}
   \smallskip
 }
+\renewcommand{\maketitle}{%
+\null%
+\vspace{-2cm}%
+\noindent\fbox{\parbox{0.978\textwidth}{
+Ausarbeitung im Seminar\hspace*{5pt}\textit{\@seminar},\hspace*{5pt}\@semester \\
+Leitung: \@leitung \\
+\@institut,\hspace*{5pt}\@universitaet
+}}
+\vspace*{0.5cm}
+  \begin{center}
+    \LARGE
+    \textbf{\@title}\\[1ex]
+    \normalsize%\large
+    by \\[2ex]
+    {\Large \@author}
+  \end{center}
+  \bigskip
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Standard-Theorem-Umgebungen: nummeriert (ohne *) und unnummeriert (mit *)
