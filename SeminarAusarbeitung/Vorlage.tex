@@ -17,6 +17,7 @@
 \universitaet{Humboldt-Universität zu Berlin}
 
 \usepackage{bbold}
+\usepackage{subcaption}
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{float}
@@ -25,70 +26,298 @@
 \usepackage{tikz}
 \usepackage{bussproofs}
 \usepackage{proof}
+\usepackage{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xcolor}
 
-\newcommand{\conf}{\mathbb{C}}
-\newcommand{\negc}[1]{\operatorname{neg}({#1})}
-\newcommand{\negd}[1]{\operatorname{neg}_{\mathcal R(d)}({#1})}
-\newcommand{\prty}{\operatorname{PARITY}}
+\newcommand {\mfirst}{minor\textsubscript{1} }
+\newcommand {\msecond}{minor\textsubscript{2} }
+
+\newcommand {\forb}{\operatorname{Forb}}
+\newcommand {\splanar}{\mathcal{S}_{\operatorname{PLANAR}}}
+\newcommand {\sforest}{\mathcal{S}_{\operatorname{FOREST}}}
+
+\newcommand {\red}{\color{red}}
 
 \begin{document}
-
 \maketitle
-\begin{abstract}
-	In this report we summarize the applications of the well-known graph minor theorem to
-	parameterized complexity. We represent the notions of nonuniformly fixed-parameter
-	tractability and vertex-deletion distance. This work is inspired by section 6.3 from
-	Parameterized Algorithms Book by Cygan et al. \cite{DBLP:books/sp/CyganFKLMPPS15}.
-\end{abstract}
-
 \section{Introduction}
-\subsection{History}
-Graph minor theorem was found by Robertson and Seymour in a series of 20 papers, resulting in a
-proof of the well-known conjecture of Wagner. Since then this theorem has been crucial in
-combinatorics, geometry and graph theory. It has seen applications in different areas of theoretical
-computer science. In this report we show applications of this theorem to parameterized complexity
-reintroducing the notion of nonuniformly fixed-parameter tractability.
+Robertson and Seymour's theorem is a very celebrated result in theoretical computer science, namely the
+theorem of Robertson and Seymour. This theorem finds applications in different areas of theoretical
+computer science and combinatorics ranging from extremal graph theory to computational geometry, approximation
+algorithms and fixed-parameter analyses. This theorem was the result of a series of twenty papers
+written by Robertson and Seymour and positively answers the conjecture of Wagner
+\cite{robertson2004graph}. In this report we summarize the applications of this theorem to
+parameterized complexity reintroducing the notion of nonuniformly fixed-parameter tractability.
 
-The theorem in short shows that any infinite set of undirected graphs contain two graphs such that
-one of them is isomorphic to a minor of the other. This implies that graph properties that are
+The theorem implies that graph properties that are
 preserved by taking minors can be described by a finite set of (minimal) forbidden minors. However,
 the proof of the theorem is non-constructive and does not deliver a way to find such a list. Such
 lists are only known for a few minor-closed classes of graphs such as planar graphs (Kuratowski's
-Theorem) outer-planar graphs and forests. For some graph-classes such lists are only partially known
+Theorem), outer-planar graphs and forests. For some graph-classes such lists are only partially known
 and can be arbitrary large for example, Toroidal graphs (graphs that can be embedded on a torus)
 have at least 250,815 known forbidden minors. On the other hand, Robertson and Seymour provide an
-algorithm, that given two graphs $G$ and $H$ finds in polynomial time in $G$ and some function in
-$H$ whether $H$ is a minor of $G$. Given the complete list of forbidden minors of some class
-$\mathcal{C}$, this results yield a polynomial time algorithm to test whether a given graph belong
-to this class or not. However, although Robertson and Seymour's theorem prove the existence of such
-an algorithm, it is not clear how to derive the algorithm it self, sense there is no clear way to
-find the list of forbidden minors of a given graph.
+algorithm for testing whether a given graph is a minor of another. Given the complete list of
+forbidden minors of some class $\mathcal{C}$, this results yield a polynomial time algorithm to test
+whether a given graph belongs to this class or not. 
 
-One application of graph minor theorem, that we will focus on in this report, is in the field of
-parameterized complexity. As discussed above, some properties of graphs stay preserved in all minors
-of a graph. We have seen that polynomial time algorithms for testing such properties exist. Under
-these properties we consider some graph parameters that have their values preserved in all minors
-of a given graph. It is not hard to show that a polynomial time algorithm exists, that given a graph
-$G$ and an integer value $k$, it tests whether the value of such a parameter in $G$ is at most $k$.
-However, since the list of forbidden minors must be hard-coded into the algorithm and we do not know
-whether an algorithm exists that generate such a list for each value of the parameter, deciding
-whether $G$ has the parameter value $k$ is not quite fixed-parameter tractable. Still, knowing that
-such an algorithm exists is a strong notion that a given problem might be fixed-parameter tractable.
-We call problems that admit such algorithms nonuniformly fixed-parameter tractable. As we shall see
-later in this report, a family of parameters, given by the number of vertex-deletions needed for a
-graph to admit a certain minor-closed property belong all to this class.  Since no known
-nonuniformly fixed-parameter tractable problem is W[1]-hard, scientists conjecture that FPT is equal
-to nonuniformly FPT.
+One application of graph minor theorem, is in the field of parameterized complexity. As discussed
+above, some properties of graphs stay preserved in all minors of a graph. We have seen that
+polynomial time algorithms for testing such properties exist. Under these properties we consider
+some graph parameters that have their values preserved in all minors of a given graph. Hence, there
+exists an algorithm that given a graph $G$ and an integer value $k$, it tests whether the value of
+this parameter in $G$ is at most $k$ in polynomial time.  However, since the list of forbidden
+minors must be hard-coded into the algorithm and we do not know whether an algorithm exists that
+generates such a list for each value of the parameter, deciding whether $G$ has the parameter value
+$k$ is not quite fixed-parameter tractable. Still, knowing that such an algorithm exists is a strong
+notion that a given problem might be fixed-parameter tractable. We will call problems that admit
+such algorithms nonuniformly fixed-parameter tractable. As we shall see later in this report, a
+family of parameters, given by the number of vertex-deletions needed for a graph to admit a certain
+minor-closed property belong all to this class. Since no known nonuniformly fixed-parameter
+tractable problem is W[1]-hard, scientists conjecture that FPT is equal to nonuniformly FPT.
 
 \subsection{Preliminaries}
+\begin{definition}
+	Let $G = (V, E)$ be an undirected graph and $e = \{u, v\}$ an edge in $G$. We say that $G' =
+	(V', E')$ is the graph resulting from $G$ by contracting $e$, where $G'$ results from $G$ by
+	removing $u, v$ and adding a new vertex $w$ adjacent to all neighbors of $u$ and to all
+	neighbors of $v$. Mathematically speaking $V' = V \setminus \{u, v\} \cup \{w\}$ for a new
+	vertex $w$ and $E' = E \setminus \{\{x, y\} \colon x \in \{u, v\}\} \cup \{\{w, y\} \colon
+	\{u, y\} \in E \text{ or } \{v, y\} \in E\}$.
+\end{definition}
+\begin{definition}\label{def:minor1}
+	We say that a graph $H$ is a minor of a graph $G$ ($H \leq_m G$) if and only if $H$ results
+	from $G$ by vertex and edge deletions and edge contractions. In other words, $H$ is a minor
+	of $G$ if and only if there exists a homeomorphism between $H$ and a subgraph of $G$.
+\end{definition}
+Equivalently, Minors can be given by the following definition. We introduce it and briefly show the
+equivalence between both definitions.
+\begin{definition}\label{def:minor2}
+	A graph $H$ is a minor of another graph $G$, if for each $h \in V(H)$ there exists a branch
+	set $V_h \subseteq V(G)$, such that
+	\begin{enumerate}[(a)]
+		\item $G[V_h]$ is connected;
+		\item for different $g,h \in V(H)$, the branch sets $V_g$ and $V_h$ are disjoint;
+		\item and for every $\{gh\} \in E(H)$ there exists an edge $\{v_gv_h\} \in E(G)$
+			such that $v_g \in V_g$ and $v_h \in V_h$.
+	\end{enumerate}
+\end{definition}
+Now we show the equivalence of both definitions answering with which \textbf{Exercise 6.12.}.
+\begin{proposition}
+	Both \cref{def:minor1} and \cref{def:minor2} of a minor are equivalent. That means, for
+	\mfirst the construction defined in the first definition and \msecond the one in the second
+	definition, a graph $H$ is a \mfirst of a graph $G$ if and only if $H$ is a \msecond of
+	$G$.
+\end{proposition}
+\begin{proof}
+	Let $H$ and $G$ be two given graphs. If $H$ is a \msecond of $G$, then $H$ results from $G$ by
+	a sequence of deletions and contractions as follows: First remove all vertices that do not
+	belong to any $v_h$ for any $h \in V(H)$. Since $V_h$ induce a connected subgraph in $G$, we
+	can contract all edges of such a connected-subgraph $G[V_h]$ into a single vertex $h'$. We
+	claim that there exists a homomorphism from $H$ to the resulting graph $G'$, where we assign
+	each vertex $h$ to $h'$ the vertex resulting from contracting all edges in $G[V_h]$. This is
+	true due to the third condition of \cref{def:minor2}. We can turn this homomorphism into an
+	isomorphism by removing all extra edges in $G'$ and hence $H$ is a \mfirst of $G$.
+
+	Now assume that $H$ is a \mfirst of $G$ and we have to prove that $H$ is a \msecond of $G$.
+	We prove this claim by induction over the sequence of deletions and contractions. Note that
+	$G$ is a \msecond of it self, where we set $V_h = \{h\}$ for each  vertex $h \in V(G)$. Now
+	assume that the graph $H'$ resulting after $n$ operations is a \msecond of $G$. Let $H$ be the
+	graph after the $n+1$st operation. If the $n+1$st operation is a vertex-deletion or an
+	edge-deletion, then $H$ is a \msecond of $G$ using the same sets $V_u\colon u \in V(H)$. If it
+	is an edge-contraction $\{u, v\}$, let $w$ be the resulting vertex. Then $H$ is a \msecond of
+	$G$ using the same sets $V_u \colon u \in V(H) \setminus \{w\}$ and $V_w := V_u \cup V_v$.
+\end{proof}
+
+\begin{definition}[Minor-closeness]
+	Let $\mathcal{C}$ be a given class of graphs. We call $\mathcal{C}$ minor-closed, if for
+	each graph $G \in \mathcal{C}$ it holds that $H \in \mathcal{C}$ for all $H \leq_m G$.
+\end{definition}
+
+For example, the class of all forests is minor closed. The class of all planar
+graphs and the class of graphs with vertex cover number at most $k$ for some constant value $k$ are
+also minor closed. As a reminder, a planar graphs is a graph that can be embedded to the plain, and
+an embedding is a crossing-free drawing. The vertex cover number of a graph $G$ is the smallest size
+of a set of vertices $S \subseteq V(G)$ such that $S$ is incident to all edges in $G$. In other
+words, $G \setminus S$ is an independent set.
+%\begin{lemma}
+%	The class of all planar-graphs is minor closed.
+%\end{lemma}
+%\begin{proof}
+%	We use \cref{def:minor1} and show the statement inductively over the sequence of operations.
+%	For the base case we have no operations. We are done since $G$ is planar by assumption. We
+%	assume that $G$ stays planar after $n$ operations. Let $\mathcal{G}$ be an embedding of $G$.
+%	If the $n+1$st operation is a vertex- or an edge-deletion, we can remove this vertex or edge
+%	from the drawing $\mathcal{G}$. Since deletion cannot introduce intersection, the embedding
+%	is still valid. If the $n+1$st operation is a contraction of some edge $\{u, v\}$ and let
+%	$w$ be the new vertex. We assume that the given embedding is a straight-line embedding. We
+%	can assume that since each planar graph admits a straight-line embedding. We sketch an
+%	embedding of the resulting graph. We draw $w$ in the middle of the line-segment that
+%	corresponds to $\{u, v\}$. Now let $x_1, \cdots x_k$ be the neighbors of $x$ sorted
+%	according to their polar angle from $w$. We draw $k$ line-segments from $w$ in the direction
+%	of $x$ close enough to each other and differ by a very small degree. Then we start from the
+%	top one and connected to $x_1$. We extend the second line-segment slightly to make and
+%	connect it to $x_2$ and continue in the same manner until we connect $w$ to all the
+%	neighbors of $u$. We repeat the same procedure again for $v$ ignoring the common neighbors
+%	of $u$ and $v$. Note that by very small we mean small enough, that there endpoints can
+%	``see'' the exact same points and segments of the original drawing.  Note also that the
+%	resulting drawing is not necessarily a straight-line drawing. It is nevertheless a
+%	crossing-free drawing and suffices to our needs. A graphical explanation is depicted in
+%	\cref{fig:planarcontraction}
+%\end{proof}
+%\begin{figure}[htpb]
+%	\centering
+%	\begin{subfigure}{.3\textwidth}
+%	\centering
+%	\includegraphics[width=\linewidth]{planar-contraction-1.eps}
+%	\end{subfigure}
+%	\hspace{1cm}
+%	\begin{subfigure}{.3\textwidth}
+%	\centering
+%	\includegraphics[width=\linewidth]{planar-contraction-2.eps}
+%	\end{subfigure}
+%	\caption{Graphical review of edge-contraction in a planar graph that preserves planarity.}%
+%	\label{fig:planarcontraction}
+%\end{figure}
+%\begin{lemma}
+%	Let $k \in \mathbb{N}$ be a given integer. The class of all graphs of vertex-cover number at
+%	most $k$ is minor-closed.
+%\end{lemma}
 
 \section{Formal results and theories}
-\subsection{Graph minors and Robertson and Seymour's theorem}
-\subsection{Non-uniformly fixed parameter tractability}
-\subsection{Vertex deletion distance}
+In this section we list the main theorems of this report. We start with the celebrated theorem of
+Robertson and Seymour and show how to apply this theorem in parameterized analyses. We finish the
+section by a general schema that spans a list of different parameters.
+\begin{theorem}[Roberson and Seymour \cite{robertson2004graph}]
+	The class of all graphs is well-quasi-ordered by the minor relation. That is, in any
+	infinite family of graphs, there are two graphs such that one is a minor of the other.
+\end{theorem}
+Now we state a very crucial corollary of this theorem, that we base the rest of this report upon. We
+skip the proof and refer to \cite{DBLP:books/sp/CyganFKLMPPS15} for more details.
+\begin{corollary}\label{cor:forb}
+	For every minor-closed graph class $\mathcal{G}$ there exists a finite set
+	$\forb(\mathcal{G})$ of graphs with the following property: for every graph $G$, grph $G$
+	belongs to $\mathcal{G}$ if and only if there does not exist a minor of $G$ that is
+	isomorphic to a member of $\forb(\mathcal{G})$.$\hfill\square$
+\end{corollary}
+For example, for $\splanar$ the family of all planar graph, $\forb(\splanar) := \{K_5, K_{3,3}\}$
+and for $\sforest$ the family of all forests we have $\forb(\sforest) := \{C_3\}$ where $K_i$ is a
+clique of $i$ vertices and $C_i$ is a simple cycle of $i$ vertices for $i \in \mathbb{N}$.
+
+The following result is also by Roberston and Seymour and is very important to make use of the
+previous results algorithmically.
+\begin{theorem}[Roberson and Seymour]\label{theo:minortest}
+	There exists a computable function $f$ and an algorithm that, for given graphs $H$ and $G$,
+	checks in time $f(H)|V(G)|^3$ whether $H \leq_m G$.
+\end{theorem}
+\cref{cor:forb} and \cref{theo:minortest} provide us with a strong tool to test whether a graph
+belongs to a minor-closed class $\mathcal{C}$ in polynomial running time given the set
+$\forb(\mathcal{C})$.
+\begin{definition}[minor-monotnousity]
+	Given a graph parameter $\rho$, we call $\rho$ minor-monotone if for all graphs $G$ and all
+	minors $H$ of $G$ ($H \leq_m G$) we have $\rho(H) \leq \rho(G)$.
+\end{definition}
+Given a minor-monotone parameter $\rho$ and a value $k$, the class $\mathcal{C}_{\rho}^k$ of all
+graphs $G$ such that $\rho(G) \leq k$ is minor closed. Hence, there exists a polynomial time
+algorithm that tests for a given graph $G$ whether $\rho(G) \leq k$. Note that
+$\forb(\mathcal{C}_{\rho}^k)$ must be hard-coded into the algorithm, and hence we do note have an
+FPT algorithm that computes $\rho(G)$. However, in this case we call the problem of computing
+$\rho(G)$ nonuniformly FPT.
+
+\begin{definition}
+	We say that a parameterized problem $Q$ is nonuniformly fixed-parameter tractable if there
+	exists a constant $\alpha$, a function $f:\mathbb{N} \rightarrow \mathbb{N}$, and a
+	collection of algorithms $\left(\mathcal{A}_k\right)_{k\in\mathbb{N}}$ such that the
+	following holds. For every $k \in \mathbb{N}$ and every input $x$, the algorithm
+	$\mathcal{A}_k$ accepts input $x$ if and only if $(x, k)$ is a yes-instance of $Q$, and the
+	running time of $\mathcal{A}_k$ on $x$ is at most $f(k)|x|^{\alpha}$.
+\end{definition}
+A problem being nonuniformly FPT is a strong notion that this problem could be FPT, since no known
+problem so far is nonuniformly FPT and W[1]-hard at the same time.
+
+\begin{definition}
+	Given a graph $G$ and a class $\mathcal{C}$. We say that $G$ has vertex-deletion distance at
+	most $d$ from $\mathcal{C}$ for some integer $d\in \mathbb{N}$, if there exists a vertex-set
+	$S \subseteq V(G)$ of size at most $d$ such that $G\setminus S \in \mathcal{S}$.
+
+	We define the $\mathcal{G}$ vertex-deletion problem for a given class of graphs
+	$\mathcal{G}$ as the problem of finding the smallest integer $k$ such that a given graph $G$
+	has vertex-deletion distance at most $k$ from $\mathcal{G}$.
+\end{definition}
+\begin{lemma}
+	The class of all graphs of vertex-deletion distance at most $d$ from a minor-closed class of
+	graphs is also minor-closed.
+\end{lemma}
+\begin{proof}
+	Let $G$ be a given graph with vertex-deletion distance at most $d$ from a minor-closed class
+	$\mathcal{C}$. Let $H$ be a minor of $G$. We show that $H$ has vertex-deletion distance at
+	most $d$ from $\mathcal{C}$ as well. We prove this claim by induction over the length $\ell$
+	of the sequence of operations to get $H$ from $G$ according to \cref{def:minor1}. The base
+	case where $\ell = 0$ is trivial. Assume that the minor $H'$ resulting after $n$ operations
+	admits the given property. Let $H$ be the minor resulting after $n+1$ operations.  Assume
+	that $S'$ is a minimum modulator of $H'$. If the $n+1$st operation is a vertex-deletion, if
+	the deleted vertex lays in $S'$, then $H$ has a strictly smaller vertex-deletion distance to
+	$\mathcal{C}$ than $H'$. Otherwise, $H\setminus S'$ is a minor of $H'\setminus S'$.
+	Similarly, if we remove an edge, then $H\setminus S' \leq_m H' \setminus S'$. Now assume
+	that the operation is a contraction of an edge $\{u, v\}$ creating a new vertex $w$ in $H$.
+	If it has an endpoint in $S'$, we set $S := (S' \setminus \{u, v\})\cup \{w\}$. Otherwise
+	set $S := S'$ clearly $H \setminus S \leq_m H' \setminus S'$. Since $\mathcal{C}$ is
+	minor-closed, $H$ has distance at most $d$ from $\mathcal{C}$.
+\end{proof}
+Using the previous lemma, it is straightforward to show that vertex-cover number and feedback vertex
+number are minor closed, since they are the vertex-deletion distance to independent-sets and forests
+respectively and both graphs are minor-closed. Note that feedback vertex number is the smallest size
+of a set of vertices that hits all cycles in a given graph. It follows directly, that feedback
+vertex number if nonuniformly FPT.
+
+\begin{corollary}
+	The $\mathcal{G}$ vertex-deletion problem for a minor-closed class $\mathcal{G}$ is
+	nonuniformly FPT.
+\end{corollary}
+
 
 \section{Problems from the book}
-Note that we gave a proof sketch of .. in the proof of ..
+We have already solved 6.12 and 6.14. in the course of the report.\\[2ex]
+\noindent \textbf{Exercise 6.16}
+We claim that the class $\mathcal{C}_k$ of graphs having a planar supergraph of diameter at most $k$
+is minor-closed. Using this claim, \cref{cor:forb} and \cref{theo:minortest} we know that for each
+integer $k$ there exists a finite set $\forb(\mathcal{C}_k)$ and an algorithm that tests whether any
+graph in this set is a minor of the input graph. If non is, the given instance must be a
+yes-instance.
+
+Let $G$ be an arbitrary graph, such that there is a planar supergraph of $G$ of diameter at most
+$k$. Let $H$ be a minor of $G$.  We prove the claim by induction over the length $\ell$ of the
+sequence of operations from \cref{def:minor1} to get $H$ from $G$. The base case where $\ell = 0$ is
+trivial. Now assume that the claim is true for the first $n$ operations and let $H$ be the graph
+resulting after the $n$ operations. Assume that $H' \in \mathcal{C}_k$. Let $H$ be the graph that
+results after $n+1$ operations. If $H$ results from $H'$ by removing a vertex or an edge, then $H'$
+is a supergraph of $H$ and hence, each supergraph of $H'$ is a supergraph of $H$. Assume that $H$
+results from $H'$ by contracting some edge $\{u, v\}$ into a new vertex $w$. Let $F'$ be a
+supergraph of $H'$ of radius at most $k$ and let $F$ be the graph resulting from $F'$ by contracting
+$\{u, v\}$ and call the new vertex $w_F$. We claim that $F$ is isomorphic to a supergraph of $H$ and
+has radius at most $k$ which completes the proof.
+
+For the first claim note that contraction is a local operation, and it suffices to prove that for
+each edge $\{w, x\}$ in $G$ there is an edge $\{w_F, x\}$ in $F$. But such an edges implies that at
+lest one of $\{u, x\}$ or $\{v, x\}$ is present in $H'$ and hence, in $F'$. Hence, by the definition
+of contraction, the edge $\{w_F, x\}$ exists in $F$.\\[2ex]
+\noindent \textbf{Exercise 6.17}
+Similar to Exercise 6.16, it suffices to prove, that the class $\mathcal{C}$ of graphs that admit an
+embedding to $R^3$ such that any pairwise linked family of cycles in $G$ has size at most $k$ is
+minor closed.  The rest of the proof follow exactly the same.
+
+Similarly to Exercise 6.16, we prove the claim by induction over the length $\ell$ of the sequence
+of operations from \cref{def:minor1} to derive a minor $H$ from a graph $G$. The base case where
+$\ell=0$ is trivial. Assume the correctness of the statement for $\ell = n$ and let $H$ be the graph
+resulting from $G$ after $n + 1$ operations. Let $H'$ be the graph after $n$ operations. By
+induction hypothesis, $H' \in \mathcal{C}$. We need to prove that $H \in \mathcal{C}$. If $H$
+results from $H'$ be removing a vertex or an edge, we can use the same embedding we used for $H'$
+and remove the corresponding vertex or edge from it. Assume that the resulting embedding contains a
+pairwise linked family of cycles of size $k$, then this family must have existed in $H'$ since we
+only add objects to the drawing. Which is a contradiction to the assumption that $H' \in
+\mathcal{C}$.
+
+Now assume that $H$ results from $H'$ by an edge-contraction. Assume that $G$ does not admit
 
 \bibliographystyle{plain}
 \bibliography{ref.bib}

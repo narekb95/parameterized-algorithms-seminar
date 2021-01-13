@@ -52,6 +52,7 @@
 \RequirePackage[english]{babel}
 \RequirePackage{amsmath,amssymb,amsthm}
 \RequirePackage{hyperref}
+\RequirePackage{cleveref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Anpassen der Titel-Umgebung:
@@ -70,20 +71,13 @@
 \renewcommand{\maketitle}{%
 \null%
 \vspace{-2cm}%
-\noindent\fbox{\parbox{0.978\textwidth}{
-Handout for the Seminar\hspace*{5pt}\textit{\@seminar}\\%,\hspace*{5pt}
-\@semester \\
-\@institut,\hspace*{5pt}\@universitaet
-}}
-\vspace*{0.5cm}
   \begin{center}
     \LARGE
     \textbf{\@title}\\[1ex]
     \normalsize%\large
-    by \\[2ex]
     {\Large \@author}
   \end{center}
-  \bigskip
+  \smallskip
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -120,6 +114,11 @@ Handout for the Seminar\hspace*{5pt}\textit{\@seminar}\\%,\hspace*{5pt}
 \newtheorem*{bemerkung*}{Bemerkung}
 \newtheorem{beispiel}[satz]{Beispiel}
 \newtheorem*{beispiel*}{Beispiel}
+
+
+\crefname{definition}{Definition}{}
+\crefname{theorem}{Theorem}{}
+\crefname{corollary}{Corollary}{}
 
 \let\beweis=\proof
 \let\endbeweis=\endproof
