@@ -277,7 +277,8 @@ vertex number if nonuniformly FPT.
 
 
 \section{Problems from the book}
-We have already solved 6.12 and 6.14. in the course of the report.\\[2ex]
+We have already solved 6.12 and 6.14. in the course of the report.\\[2ex]%
+%
 \noindent \textbf{Exercise 6.16}
 We claim that the class $\mathcal{C}_k$ of graphs having a planar supergraph of diameter at most $k$
 is minor-closed. Using this claim, \cref{cor:forb} and \cref{theo:minortest} we know that for each
@@ -300,7 +301,8 @@ has radius at most $k$ which completes the proof.
 For the first claim note that contraction is a local operation, and it suffices to prove that for
 each edge $\{w, x\}$ in $G$ there is an edge $\{w_F, x\}$ in $F$. But such an edges implies that at
 lest one of $\{u, x\}$ or $\{v, x\}$ is present in $H'$ and hence, in $F'$. Hence, by the definition
-of contraction, the edge $\{w_F, x\}$ exists in $F$.\\[2ex]
+of contraction, the edge $\{w_F, x\}$ exists in $F$.\\[2ex]%
+%
 \noindent \textbf{Exercise 6.17}
 Similar to Exercise 6.16, it suffices to prove, that the class $\mathcal{C}$ of graphs that admit an
 embedding to $R^3$ such that any pairwise linked family of cycles in $G$ has size at most $k$ is
@@ -313,11 +315,43 @@ resulting from $G$ after $n + 1$ operations. Let $H'$ be the graph after $n$ ope
 induction hypothesis, $H' \in \mathcal{C}$. We need to prove that $H \in \mathcal{C}$. If $H$
 results from $H'$ be removing a vertex or an edge, we can use the same embedding we used for $H'$
 and remove the corresponding vertex or edge from it. Assume that the resulting embedding contains a
-pairwise linked family of cycles of size $k$, then this family must have existed in $H'$ since we
-only add objects to the drawing. Which is a contradiction to the assumption that $H' \in
-\mathcal{C}$.
+pairwise linked family of cycles of size strictly greater than $k$, then this family must have
+existed in $H'$ since we only add objects to the drawing. Which is a contradiction to the assumption
+that $H' \in \mathcal{C}$.
 
-Now assume that $H$ results from $H'$ by an edge-contraction. Assume that $G$ does not admit
+Now assume that $H$ results from $H'$ by an edge-contraction. We can turn an embedding of $H'$ to an
+embedding of $H$ by drawing the resulting vertex on an arbitrary point on one of the endpoints of
+the contracted edge, connecting all neighbors of this endpoint to the new vertex using the exact
+same curves and the neighbors of the other endpoints using the same curves where we remove a very
+small part of each of these curves and continue each such curve along and very close to the
+curve corresponding to the contracted edge to reach the new vertex. Assume that there is a pairwise
+linked family of cycles in $H$ of size strictly more than $k$. This family must contain the vertex
+resulting from the contraction,
+else it would have existed in $H'$. But then we can replace this new vertex either by the contracted
+curve or by one of its endpoints getting a similar family in the given drawing oh $H'$ which
+contradicts the assumption, that the given drawing is linkless.\\[2ex]%
+%
+\noindent \textbf{Exercise 6.19} Let $\mathcal{C}_k$ be the set of graphs containing $k$
+vertex-disjoint cycles and let $G_k$ be a disjoint union of $k$ simple cycles of 3 vertex $C_3$.
+Given a graph $G$. We claim that $G \in \mathcal{C}_k$ if and only if $G_3 \leq_m G$. Using this
+claim and \cref{theo:minortest}, we known that for each $k$ there is an algorithm that given a graph
+$G$ tests in polynomial time in $G$ whether $G_k$ is a minor of $G$ or not.
+
+\noindent $\implies:$ Given such a graph $G$, let $C^1, \dots C^k$ be a set of $k$ vertex-disjoint
+cycles in $G$. We contract all be three edges of each such cycles, remove all vertices not appearing
+on any of these cycles and edges that connect cycles getting a disjoint union of k $C_3$ cycles as a
+minor of $G$.
+
+\noindent $\impliedby:$ Again we prove this claim by induction over the length $\ell$ of the
+sequence of operations to get the minor from $G$. The base case $\ell = 0$ and the given graph is
+already a disjoint union of $k$ copies of $C_3$ and hence is a yes-instance. Now assume $G :=
+H_{n+1}, H_{n}, \cdots {H_0} := G_k$ is a sequence of graphs resulting from $n+1$ operations from
+\cref{def:minor1}. $H_n$ has a vertex-disjoint set of $k$ cycles by induction hypothesis. If $H_n$
+results from $G$ by deleting a vertex of an edge, then the same set of cycle exists in $G$.
+Otherwise it results by edge contractions. The emerging vertex appears on at most one cycle, we can
+turn this cycle into a cycle in $G$ by replacing this vertex either by the contracted edge or by one
+of its endpoints getting a vertex-disjoint $k$ cycles in $G$.
+
 
 \bibliographystyle{plain}
 \bibliography{ref.bib}
