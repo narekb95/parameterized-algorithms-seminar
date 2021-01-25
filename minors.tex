@@ -66,10 +66,10 @@ Humboldt University of Berlin\\ % Your institution for the title page
 		\item []
 		\item []
 		\item A graph $H$ is a minor of $G$ i.e. ``$H\leq_m G$'' iff\\
-			there exists branch-set $V_h$ f.a. $h \in V(h)$ s.t.
+			there exists vertex-set $V_h$ f.a. $h \in V(h)$ s.t.
 			\begin{itemize}
-				\item $G[V_h]$ is connected.
-				\item for $g \neq h$ it holds $V_g \cap V_h = \emptyset$.
+				\item $G[V_h]$ is connected,
+				\item for $g \neq h$ it holds $V_g \cap V_h = \emptyset$,
 				\item for $\{g,h\} \in E(H)$, there exist $u_g \in V_g, u_h
 					\in V_h$,\\
 					s.t. $\{u_g, u_h\} \in E(G)$.
@@ -80,8 +80,8 @@ Humboldt University of Berlin\\ % Your institution for the title page
 \begin{frame}\frametitle{Graph minors}
 		\begin{itemize}
 			\item $G[V_h]$ is connected.
-			\item for $g \neq h$ it holds $V_g \cap V_h = \emptyset$.
-			\item for $\{g,h\} \in E(H)$, there exist $u_g \in V_g, u_h
+			\item For $g \neq h$ it holds $V_g \cap V_h = \emptyset$.
+			\item For $\{g,h\} \in E(H)$, there exist $u_g \in V_g, u_h
 				\in V_h$,\\
 				s.t. $\{u_g, u_h\} \in E(G)$.
 		\end{itemize}
@@ -105,19 +105,25 @@ Humboldt University of Berlin\\ % Your institution for the title page
 			\mathcal{C}$\\
 			\hspace{1cm}and $H\leq_m G$ it holds $H \in \mathcal{C}$.
 			\\ \vspace{1cm}
-		\item Examples:
-			\begin{itemize}
-				\item Forests.
-				\item Graphs with vertex cover number $\leq k$.
-				\item \textbf{Planar graphs}.
-			\end{itemize}
 	\end{itemize}
+	\begin{minipage}{.49\linewidth}
+	Examples:
+	\begin{itemize}[<+->]
+			\item Forests.
+			\item Vertex cover number $\leq k$.
+			\item \textbf{Planar graphs}.
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{.49\linewidth}
+		\centering
+		\uncover<4->{\includegraphics[width=.8\linewidth]{vc-closed.eps}}
+	\end{minipage}
 \end{frame}
 \begin{frame} \frametitle{Planar Graphs}
 	\begin{itemize}[<+->]
 		\item Planar graphs are graphs\\
 			\hspace{1cm}that can be \textbf{embedded} into the plane.
-		\item An embedding is a corssing-free drawing.
+		\item An embedding is a crossing-free drawing.
 		\item $K_5$ is not planar, but $K_4$ is.\\
 			{
 			\includegraphics[width=0.3\linewidth]{k5.eps}
@@ -184,7 +190,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 	\begin{itemize}[<+->]
 		\item We call a parameter $\rho$ minor-monotone,\\
 			\hspace{1cm}if $\rho(H)\leq \rho(G)$ for all $H \leq_m G$.
-		\item Vertex cover number is minor monotne. (why?)
+		\item Vertex cover number is minor monotone. (why?)
 		\item Longest path and feedback vertex number are also minor-monotone.
 		\item Given a parameter $\rho$ and a constant $k$,\\
 		\hspace{1cm}let $\mathcal{C}_{\rho, k} := \{G \colon \rho(G) \leq k\}$.
@@ -206,7 +212,8 @@ Humboldt University of Berlin\\ % Your institution for the title page
 		\begin{itemize}[<+->]
 			\item the algorithm $\mathcal{A}_k$ accepts $x$ if and only if $(x,
 				k)$ is a yes-instance of $\mathcal{Q}$,
-			\item and $\mathcal{A}_k$ runs in time $f(k)|x|^{\alpha}$.
+			\item and $\mathcal{A}_k$ runs in time $f(k)|x|^{\alpha}$, for some constant
+				$\alpha$.
 		\end{itemize}
 	\item For a minor-monotone parameter $\rho$,\\
 		\hspace{1cm}finding $\rho(G)$ of a given graph $G$ is nonuniformly FPT.
@@ -215,7 +222,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 \end{frame}
 \begin{frame}\frametitle{Vertex-deletion distance}
 	\begin{itemize}[<+->]
-		\item The class of independent sets $\mathcal{I}$ is minor closed.
+		\item The class of independent sets $\mathcal{I}$ is minor-closed.
 		\item Given a graph $G$. The vertex cover number of $G$
 		\item[] \hspace{1cm} is the number of vertex-deletions to independent sets.
 		\item Vertex cover number is vertex-deletion distance to independent sets.
@@ -224,17 +231,21 @@ Humboldt University of Berlin\\ % Your institution for the title page
 			\mathcal{G}$.
 		\item $\mathcal{G} + k v$ graphs with vertex-deletions distance at most $k$ to
 			$\mathcal{G}$.
-		\item $\mathcal{I} + k v$ is class of graphs with vertex-cover number $k$.
+		\item $\mathcal{I} + k v$ is class of graphs with vertex cover number $k$.
 	\end{itemize}
 \end{frame}
 \begin{frame}\frametitle{Vertex-deletion distance}
 	\begin{itemize}[<+->]
-		\item Vertex cover number $k$ is minor closed.
+		\item Vertex cover number $k$ is minor-closed.
 		\item More generally:
 		\item[] The class of graphs with vertex-deletion distance $k$\\
-			to a minor-closed class of graphs is minor closed. (why?)
+			to a minor-closed class of graphs is minor-closed. (why?)
+		\item[]\centering \includegraphics[width=.4\linewidth]{minor-closed.eps}
 		\item Vertex-deletion distance to a minor-closed class is minor-monotone.
-
+	\end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Vertex-deletion distance}
+	\begin{itemize}[<+->]
 		\item $\mathcal{G}$ Vertex-deletion Problem:
 			\begin{itemize}
 				\item Given $G$ and $k$.
@@ -242,7 +253,7 @@ Humboldt University of Berlin\\ % Your institution for the title page
 			\end{itemize}
 		\item For each minor-closed class $\mathcal{G}$, 
 		\item[] \hspace{1cm} $\mathcal{G}$ vertex-deletion problem is nonuniformly FPT.
-		\item Example: Feedback-vertex number is vertex-deletion distance to forests.
+		\item Example: Feedback vertex number is vertex-deletion distance to forests.
 	\end{itemize}
 \end{frame}
 \end{document} 
