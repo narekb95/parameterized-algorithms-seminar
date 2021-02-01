@@ -83,8 +83,8 @@
 \null%
 \vspace{-2cm}%
 \noindent\fbox{\parbox{0.978\textwidth}{
-Ausarbeitung im Seminar\hspace*{5pt}\textit{\@seminar},\hspace*{5pt}\@semester \\
-Leitung: \@leitung \\
+Handout for the Seminar\hspace*{5pt}\textit{\@seminar}\\
+\@semester \\
 \@institut,\hspace*{5pt}\@universitaet
 }}
 \vspace*{0.5cm}
