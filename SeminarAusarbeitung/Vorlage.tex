@@ -8,7 +8,7 @@
 % die in der Datei SeminarAusarbeitung.cls bereitgestellt wird
 \documentclass{SeminarAusarbeitung}
 
-\title{Graph minors\\The Robertson-Seymour theorem}
+\title{Graph minors\\The Robertson-Seymour's Theorem}
 \author{Narek Bojikian}
 \seminar{Parameterized Complexity}
 \semester{Winter semester 20/21}
@@ -42,44 +42,46 @@
 \begin{document}
 \maketitle
 \section{Introduction}
-Robertson and Seymour's theorem is a very celebrated result in theoretical computer science, namely the
-theorem of Robertson and Seymour. This theorem finds applications in different areas of theoretical
-computer science and combinatorics ranging from extremal graph theory to computational geometry, approximation
-algorithms and fixed-parameter analyses. This theorem was the result of a series of twenty papers
-written by Robertson and Seymour and positively answers the conjecture of Wagner
+Robertson and Seymour's theorem (aka. graph minor theorem) is a very celebrated result in
+theoretical computer science. This theorem finds applications in different areas of theoretical
+computer science and combinatorics ranging from extremal graph theory to computational geometry,
+approximation algorithms and fixed-parameter analyses. This theorem was the result of a series of
+twenty papers written by Robertson and Seymour and positively answers the conjecture of Wagner
 \cite{robertson2004graph}. In this report we summarize the applications of this theorem to
-parameterized complexity reintroducing the notion of nonuniformly fixed-parameter tractability.
+parameterized complexity and explain the notion of nonuniformly fixed-parameter tractability.
 
-The theorem implies that graph properties that are
-preserved by taking minors can be described by a finite set of (minimal) forbidden minors. However,
-the proof of the theorem is non-constructive and does not deliver a way to find such a list. Such
-lists are only known for a few minor-closed classes of graphs such as planar graphs (Kuratowski's
-Theorem), outer-planar graphs and forests. For some graph-classes such lists are only partially known
-and can be arbitrary large for example, Toroidal graphs (graphs that can be embedded on a torus)
-have at least 250,815 known forbidden minors. On the other hand, Robertson and Seymour provide an
-algorithm for testing whether a given graph is a minor of another. Given the complete list of
-forbidden minors of some class $\mathcal{C}$, this results yield a polynomial time algorithm to test
-whether a given graph belongs to this class or not. 
+The theorem implies that graph properties that are preserved under the minor relation can be
+described by a finite set of (minimal) forbidden minors. However, the proof of the theorem is
+non-constructive and does not deliver a way to find such a list algorithmically. It does not either
+bound the size of such a list. Such lists are only known for a few minor-closed classes of graphs
+such as planar graphs (Kuratowski's Theorem), outer-planar graphs and forests. For some
+graph-classes such lists are only partially known and can be arbitrarily large.  For example,
+Toroidal graphs (graphs that can be embedded on a torus) have at least 250,815 known forbidden
+minors. On the other hand, Robertson and Seymour provide an algorithm for testing whether a given
+graph is a minor of another. Given the complete list of forbidden minors of some class
+$\mathcal{C}$, this results yield a polynomial time algorithm to test whether a given graph belongs
+to this class or not.
 
-One application of graph minor theorem, is in the field of parameterized complexity. As discussed
+One application of graph minor theorem is in the field of parameterized complexity. As discussed
 above, some properties of graphs stay preserved in all minors of a graph. We have seen that
 polynomial time algorithms for testing such properties exist. Under these properties we consider
-some graph parameters that have their values preserved in all minors of a given graph. Hence, there
-exists an algorithm that given a graph $G$ and an integer value $k$, it tests whether the value of
-this parameter in $G$ is at most $k$ in polynomial time.  However, since the list of forbidden
-minors must be hard-coded into the algorithm and we do not know whether an algorithm exists that
-generates such a list for each value of the parameter, deciding whether $G$ has the parameter value
-$k$ is not quite fixed-parameter tractable. Still, knowing that such an algorithm exists is a strong
-notion that a given problem might be fixed-parameter tractable. We will call problems that admit
-such algorithms nonuniformly fixed-parameter tractable. As we shall see later in this report, a
-family of parameters, given by the number of vertex-deletions needed for a graph to admit a certain
-minor-closed property belong all to this class. Since no known nonuniformly fixed-parameter
-tractable problem is W[1]-hard, scientists conjecture that FPT is equal to nonuniformly FPT.
+some graph parameters. Such parameters that do not increase in value when we take a minor of a given
+graph. We conclude that given an integer $k$, there exists an algorithm $\mathcal{A}_k$ that given a
+graph $G$, it tests whether the value of this parameter in $G$ is at most $k$ in polynomial time.
+However, since the list of forbidden minors must be hard-coded into the algorithm and we do not know
+whether an algorithm exists that generates such a list for each value of the parameter, deciding
+whether $G$ has the parameter value $k$ is not quite fixed-parameter tractable. Still, knowing that
+such an algorithm exists is a strong notion that a given problem might be fixed-parameter tractable.
+We will call problems that admit such algorithms nonuniformly fixed-parameter tractable.
+At the end of this report, we will introduce a family of parameters, given by the number of
+vertex-deletions needed for a graph to admit a certain minor-closed property, belong all to the
+class nonuniformly FPT. Since no known nonuniformly fixed-parameter tractable problem is W[1]-hard,
+scientists conjecture that FPT is equal to nonuniformly FPT.
 
 \subsection{Preliminaries}
 \begin{definition}
 	Let $G = (V, E)$ be an undirected graph and $e = \{u, v\}$ an edge in $G$. We say that $G' =
-	(V', E')$ is the graph resulting from $G$ by contracting $e$, where $G'$ results from $G$ by
+	(V', E')$ is the graph resulting from $G$ by contracting $e$, when $G'$ results from $G$ by
 	removing $u, v$ and adding a new vertex $w$ adjacent to all neighbors of $u$ and to all
 	neighbors of $v$. Mathematically speaking $V' = V \setminus \{u, v\} \cup \{w\}$ for a new
 	vertex $w$ and $E' = E \setminus \{\{x, y\} \colon x \in \{u, v\}\} \cup \{\{w, y\} \colon
@@ -110,14 +112,15 @@ Now we show the equivalence of both definitions answering with which \textbf{Exe
 	$G$.
 \end{proposition}
 \begin{proof}
-	Let $H$ and $G$ be two given graphs. If $H$ is a \msecond of $G$, then $H$ results from $G$ by
-	a sequence of deletions and contractions as follows: First remove all vertices that do not
-	belong to any $v_h$ for any $h \in V(H)$. Since $V_h$ induce a connected subgraph in $G$, we
-	can contract all edges of such a connected-subgraph $G[V_h]$ into a single vertex $h'$. We
-	claim that there exists a homomorphism from $H$ to the resulting graph $G'$, where we assign
-	each vertex $h$ to $h'$ the vertex resulting from contracting all edges in $G[V_h]$. This is
-	true due to the third condition of \cref{def:minor2}. We can turn this homomorphism into an
-	isomorphism by removing all extra edges in $G'$ and hence $H$ is a \mfirst of $G$.
+	Let $H$ and $G$ be two given graphs. Assume that  $H$ is a \msecond of $G$, we have to show
+	that $H$ results from $G$ by a sequence of deletions and contractions. First remove all
+	vertices that do not belong to any $v_h$ for any $h \in V(H)$. Since $V_h$ induce a
+	connected subgraph in $G$, we can contract all edges of such a connected-subgraph $G[V_h]$
+	into a single vertex $h'$. We claim that there exists a homomorphism from $H$ to the
+	resulting graph $G'$, where we assign each vertex $h$ to $h'$ the vertex resulting from
+	contracting all edges in $G[V_h]$. This is true due to the third condition of
+	\cref{def:minor2}. We can turn this homomorphism into an isomorphism by removing all extra
+	edges in $G'$ and hence $H$ is a \mfirst of $G$.
 
 	Now assume that $H$ is a \mfirst of $G$ and we have to prove that $H$ is a \msecond of $G$.
 	We prove this claim by induction over the sequence of deletions and contractions. Note that
@@ -129,19 +132,19 @@ Now we show the equivalence of both definitions answering with which \textbf{Exe
 	$G$ using the same sets $V_u \colon u \in V(H) \setminus \{w\}$ and $V_w := V_u \cup V_v$.
 \end{proof}
 
-\begin{definition}[Minor-closeness]
+\begin{definition}[Minor-closed classes]
 	Let $\mathcal{C}$ be a given class of graphs. We call $\mathcal{C}$ minor-closed, if for
 	each graph $G \in \mathcal{C}$ it holds that $H \in \mathcal{C}$ for all $H \leq_m G$.
 \end{definition}
 
-For example, the class of all forests is minor closed. The class of all planar
+For example, the class of all forests is minor-closed. The class of all planar
 graphs and the class of graphs with vertex cover number at most $k$ for some constant value $k$ are
-also minor closed. As a reminder, a planar graphs is a graph that can be embedded to the plain, and
+also minor-closed. As a reminder, a planar graphs is a graph that can be embedded to the plain, and
 an embedding is a crossing-free drawing. The vertex cover number of a graph $G$ is the smallest size
 of a set of vertices $S \subseteq V(G)$ such that $S$ is incident to all edges in $G$. In other
 words, $G \setminus S$ is an independent set.
 %\begin{lemma}
-%	The class of all planar-graphs is minor closed.
+%	The class of all planar-graphs is minor-closed.
 %\end{lemma}
 %\begin{proof}
 %	We use \cref{def:minor1} and show the statement inductively over the sequence of operations.
@@ -192,13 +195,13 @@ section by a general schema that spans a list of different parameters.
 	The class of all graphs is well-quasi-ordered by the minor relation. That is, in any
 	infinite family of graphs, there are two graphs such that one is a minor of the other.
 \end{theorem}
-Now we state a very crucial corollary of this theorem, that we base the rest of this report upon. We
-skip the proof and refer to \cite{DBLP:books/sp/CyganFKLMPPS15} for more details.
+Now we state a very crucial corollary of this theorem, that constructs the base-line of the results
+in this report. We skip the proof and refer to \cite{DBLP:books/sp/CyganFKLMPPS15} for more details.
 \begin{corollary}\label{cor:forb}
 	For every minor-closed graph class $\mathcal{G}$ there exists a finite set
-	$\forb(\mathcal{G})$ of graphs with the following property: for every graph $G$, grph $G$
-	belongs to $\mathcal{G}$ if and only if there does not exist a minor of $G$ that is
-	isomorphic to a member of $\forb(\mathcal{G})$.$\hfill\square$
+	$\forb(\mathcal{G})$ of graphs with the following property: for every graph $G$, $G$ belongs
+	to $\mathcal{G}$ if and only if there does not exist a minor of $G$ that is isomorphic to a
+	member of $\forb(\mathcal{G})$.$\hfill\square$
 \end{corollary}
 For example, for $\splanar$ the family of all planar graph, $\forb(\splanar) := \{K_5, K_{3,3}\}$
 and for $\sforest$ the family of all forests we have $\forb(\sforest) := \{C_3\}$ where $K_i$ is a
@@ -210,7 +213,7 @@ previous results algorithmically.
 	There exists a computable function $f$ and an algorithm that, for given graphs $H$ and $G$,
 	checks in time $f(H)|V(G)|^3$ whether $H \leq_m G$.
 \end{theorem}
-\cref{cor:forb} and \cref{theo:minortest} provide us with a strong tool to test whether a graph
+Together \cref{cor:forb} and \cref{theo:minortest} provide us with a strong tool to test whether a graph
 belongs to a minor-closed class $\mathcal{C}$ in polynomial running time given the set
 $\forb(\mathcal{C})$.
 \begin{definition}[minor-monotnousity]
@@ -218,11 +221,11 @@ $\forb(\mathcal{C})$.
 	minors $H$ of $G$ ($H \leq_m G$) we have $\rho(H) \leq \rho(G)$.
 \end{definition}
 Given a minor-monotone parameter $\rho$ and a value $k$, the class $\mathcal{C}_{\rho}^k$ of all
-graphs $G$ such that $\rho(G) \leq k$ is minor closed. Hence, there exists a polynomial time
+graphs $G$ such that $\rho(G) \leq k$ is minor-closed. Hence, there exists a polynomial time
 algorithm that tests for a given graph $G$ whether $\rho(G) \leq k$. Note that
-$\forb(\mathcal{C}_{\rho}^k)$ must be hard-coded into the algorithm, and hence we do note have an
-FPT algorithm that computes $\rho(G)$. However, in this case we call the problem of computing
-$\rho(G)$ nonuniformly FPT.
+$\forb(\mathcal{C}_{\rho}^k)$ must be hard-coded into the algorithm and we do not have a generic
+tool to generate them algorithmically, and hence we do not have yet an FPT algorithm that computes
+$\rho(G)$. However, in this case we call the problem of computing $\rho(G)$ nonuniformly FPT.
 
 \begin{definition}
 	We say that a parameterized problem $Q$ is nonuniformly fixed-parameter tractable if there
@@ -233,7 +236,7 @@ $\rho(G)$ nonuniformly FPT.
 	running time of $\mathcal{A}_k$ on $x$ is at most $f(k)|x|^{\alpha}$.
 \end{definition}
 A problem being nonuniformly FPT is a strong notion that this problem could be FPT, since no known
-problem so far is nonuniformly FPT and W[1]-hard at the same time.
+problem to our knowledge so far is nonuniformly FPT and W[1]-hard at the same time.
 
 \begin{definition}
 	Given a graph $G$ and a class $\mathcal{C}$. We say that $G$ has vertex-deletion distance at
@@ -265,8 +268,8 @@ problem so far is nonuniformly FPT and W[1]-hard at the same time.
 	minor-closed, $H$ has distance at most $d$ from $\mathcal{C}$.
 \end{proof}
 Using the previous lemma, it is straightforward to show that vertex-cover number and feedback vertex
-number are minor closed, since they are the vertex-deletion distance to independent-sets and forests
-respectively and both graphs are minor-closed. Note that feedback vertex number is the smallest size
+number are both minor-monotone, since they are the vertex-deletion distance to independent-sets and forests
+respectively. Note that feedback vertex number is the smallest size
 of a set of vertices that hits all cycles in a given graph. It follows directly, that feedback
 vertex number if nonuniformly FPT.
 
@@ -277,19 +280,19 @@ vertex number if nonuniformly FPT.
 
 
 \section{Problems from the book}
-We have already solved 6.12 and 6.14. in the course of the report.\\[2ex]%
+We have already solved 6.12 and 6.14. in the course of this report.\\[2ex]%
 %
-\noindent \textbf{Exercise 6.16}
+\noindent \textbf{Exercise 6.16. 1.}
 We claim that the class $\mathcal{C}_k$ of graphs having a planar supergraph of diameter at most $k$
 is minor-closed. Using this claim, \cref{cor:forb} and \cref{theo:minortest} we know that for each
 integer $k$ there exists a finite set $\forb(\mathcal{C}_k)$ and an algorithm that tests whether any
 graph in this set is a minor of the input graph. If non is, the given instance must be a
-yes-instance.
+yes-instance. Otherwise, it is a not.
 
 Let $G$ be an arbitrary graph, such that there is a planar supergraph of $G$ of diameter at most
 $k$. Let $H$ be a minor of $G$.  We prove the claim by induction over the length $\ell$ of the
 sequence of operations from \cref{def:minor1} to get $H$ from $G$. The base case where $\ell = 0$ is
-trivial. Now assume that the claim is true for the first $n$ operations and let $H$ be the graph
+trivial. Now assume that the claim is true for the first $n$ operations and let $H'$ be the graph
 resulting after the $n$ operations. Assume that $H' \in \mathcal{C}_k$. Let $H$ be the graph that
 results after $n+1$ operations. If $H$ results from $H'$ by removing a vertex or an edge, then $H'$
 is a supergraph of $H$ and hence, each supergraph of $H'$ is a supergraph of $H$. Assume that $H$
@@ -300,13 +303,23 @@ has radius at most $k$ which completes the proof.
 
 For the first claim note that contraction is a local operation, and it suffices to prove that for
 each edge $\{w, x\}$ in $G$ there is an edge $\{w_F, x\}$ in $F$. But such an edges implies that at
-lest one of $\{u, x\}$ or $\{v, x\}$ is present in $H'$ and hence, in $F'$. Hence, by the definition
-of contraction, the edge $\{w_F, x\}$ exists in $F$.\\[2ex]%
+least one of $\{u, x\}$ or $\{v, x\}$ is present in $H'$ and hence, in $F'$. Hence, by the definition
+of contraction, the edge $\{w_F, x\}$ exists in $F$.
+
+\noindent \textbf{2.} Assume that $G'$ is a supergraph of $G$ with at least one added vertex $v 
+\in V(G') \setminus V(G)$. The vertex $v$ must have at least one neighbor $w$ in $G'$, since $G'$
+has radius at most $k$. By removing $v$ from $G'$ we get a super graph $G'' := G'\setminus v$ of
+$G$, since $v \notin V(G)$. We claim that the graph resulting from $G''$ by adding all edges $\{\{u,
+w\}\colon u\neq v , \{u, v\} \in E(G')\}$ is planar and has radius at most $k$. The radius argument
+is clear, since any path that used $v$ can replace $v$ now by $w$ or remove $v$ if $w$ was directly
+adjacent to $v$ on the path. To show planarity, given an embedding of $G'$, we can remove $v$ and
+continue all curves $\{u, v\}$ to $w$ keeping a small distance between them following the curve
+$\{w, v\}$.\\[2ex]%
 %
 \noindent \textbf{Exercise 6.17}
 Similar to Exercise 6.16, it suffices to prove, that the class $\mathcal{C}$ of graphs that admit an
 embedding to $R^3$ such that any pairwise linked family of cycles in $G$ has size at most $k$ is
-minor closed.  The rest of the proof follow exactly the same.
+minor-closed.  The rest of the proof follow exactly the same.
 
 Similarly to Exercise 6.16, we prove the claim by induction over the length $\ell$ of the sequence
 of operations from \cref{def:minor1} to derive a minor $H$ from a graph $G$. The base case where
@@ -316,42 +329,42 @@ induction hypothesis, $H' \in \mathcal{C}$. We need to prove that $H \in \mathca
 results from $H'$ be removing a vertex or an edge, we can use the same embedding we used for $H'$
 and remove the corresponding vertex or edge from it. Assume that the resulting embedding contains a
 pairwise linked family of cycles of size strictly greater than $k$, then this family must have
-existed in $H'$ since we only add objects to the drawing. Which is a contradiction to the assumption
-that $H' \in \mathcal{C}$.
+existed in $H'$ since we only removed objects from the drawing. This is a contradiction to the
+assumption that $H' \in \mathcal{C}$.
 
-Now assume that $H$ results from $H'$ by an edge-contraction. We can turn an embedding of $H'$ to an
-embedding of $H$ by drawing the resulting vertex on an arbitrary point on one of the endpoints of
+Now assume that $H$ results from $H'$ by an edge-contraction. We can turn an embedding of $H'$ into
+an embedding of $H$ by drawing the resulting vertex on one of the endpoints of
 the contracted edge, connecting all neighbors of this endpoint to the new vertex using the exact
 same curves and the neighbors of the other endpoints using the same curves where we remove a very
-small part of each of these curves and continue each such curve along and very close to the
-curve corresponding to the contracted edge to reach the new vertex. Assume that there is a pairwise
-linked family of cycles in $H$ of size strictly more than $k$. This family must contain the vertex
-resulting from the contraction,
-else it would have existed in $H'$. But then we can replace this new vertex either by the contracted
-curve or by one of its endpoints getting a similar family in the given drawing oh $H'$ which
-contradicts the assumption, that the given drawing is linkless.\\[2ex]%
+small part from the end of each curve and continue each curve along and very close to
+the curve corresponding to the contracted edge to reach the new vertex. Assume that there is a
+pairwise linked family of cycles in $H$ of size strictly more than $k$. This family must contain the
+vertex resulting from the contraction, since else it would have existed in $H'$. But then we can
+replace this new vertex either by the contracted curve or by one of its endpoints getting a similar
+family in the given drawing of $H'$ which contradicts the assumption, that the given drawing is
+linkless.\\[2ex]%
 %
 \noindent \textbf{Exercise 6.19} Let $\mathcal{C}_k$ be the set of graphs containing $k$
-vertex-disjoint cycles and let $G_k$ be a disjoint union of $k$ simple cycles of 3 vertex $C_3$.
+vertex-disjoint cycles and let $G_k$ be a disjoint union of $k$ simple cycles of 3 vertices $C_3$.
 Given a graph $G$. We claim that $G \in \mathcal{C}_k$ if and only if $G_3 \leq_m G$. Using this
-claim and \cref{theo:minortest}, we known that for each $k$ there is an algorithm that given a graph
+claim and \cref{theo:minortest}, we know that for each $k$ there is an algorithm that given a graph
 $G$ tests in polynomial time in $G$ whether $G_k$ is a minor of $G$ or not.
 
 \noindent $\implies:$ Given such a graph $G$, let $C^1, \dots C^k$ be a set of $k$ vertex-disjoint
-cycles in $G$. We contract all be three edges of each such cycles, remove all vertices not appearing
-on any of these cycles and edges that connect cycles getting a disjoint union of k $C_3$ cycles as a
-minor of $G$.
+cycles in $G$. We contract all but three edges of each such cycles, remove all vertices not
+appearing on any of these cycles and edges that connect cycles getting a disjoint union of k $C_3$
+cycles as a minor of $G$.
 
 \noindent $\impliedby:$ Again we prove this claim by induction over the length $\ell$ of the
 sequence of operations to get the minor from $G$. The base case $\ell = 0$ and the given graph is
 already a disjoint union of $k$ copies of $C_3$ and hence is a yes-instance. Now assume $G :=
 H_{n+1}, H_{n}, \cdots {H_0} := G_k$ is a sequence of graphs resulting from $n+1$ operations from
 \cref{def:minor1}. $H_n$ has a vertex-disjoint set of $k$ cycles by induction hypothesis. If $H_n$
-results from $G$ by deleting a vertex of an edge, then the same set of cycle exists in $G$.
-Otherwise it results by edge contractions. The emerging vertex appears on at most one cycle, we can
+results from $G$ by deleting a vertex or an edge, then the same set of cycles exists in $G$.
+Otherwise it results by edge contractions. The emerging vertex appears on at most one cycle in the
+disjoint set and hence, we can
 turn this cycle into a cycle in $G$ by replacing this vertex either by the contracted edge or by one
 of its endpoints getting a vertex-disjoint $k$ cycles in $G$.
-
 
 \bibliographystyle{plain}
 \bibliography{ref.bib}
